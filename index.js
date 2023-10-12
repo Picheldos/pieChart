@@ -1,9 +1,13 @@
 const canvas = document.getElementById('pie');
 const ctx = canvas.getContext('2d');
+
 const colors = ['#EB5757', '#F2994A', '#6FCF97', '#9B51E0', '#2F80ED', '#56CCF2', '#219653', '#F2C94C'];
+const CHART_RADIUS_RATIO = 0.8;
+const NUM_VALUES_RANGE = 8;
+const CENTER_CIRCLE_RADIUS = 50;
 
 const generateData = () => {
-    const numValues = Math.floor(Math.random() * 8) + 1;
+    const numValues = Math.floor(Math.random() * NUM_VALUES_RANGE) + 1;
     const values = [];
 
     let totalValue = 0;
@@ -28,7 +32,7 @@ const drawChart = (data) => {
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const radius = Math.min(centerX, centerY) * 0.8;
+    const radius = Math.min(centerX, centerY) * CHART_RADIUS_RATIO;
 
     let startAngle = -Math.PI / 2;
 
@@ -49,10 +53,17 @@ const drawChart = (data) => {
     });
 
     ctx.beginPath();
-    ctx.arc(centerX, centerY, 50, 0, 2 * Math.PI);
+    ctx.arc(centerX, centerY, CENTER_CIRCLE_RADIUS, 0, 2 * Math.PI);
     ctx.fillStyle = 'white';
     ctx.fill();
 }
+
+const updateChart = () => {
+    const newData = generateData();
+    drawChart(newData);
+}
+
+canvas.addEventListener('click', updateChart);
 
 const data = generateData();
 drawChart(data);
